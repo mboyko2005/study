@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Название лекции -->
+        <TextView
+            android:id="@+id/tv_lecture_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Название лекции"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#0098EA" />
+
+        <!-- Краткое содержание лекции -->
+        <TextView
+            android:id="@+id/tv_lecture_content_preview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Краткое содержание лекции"
+            android:layout_marginTop="8dp"
+            android:textColor="#1E2337" /> <!-- Темнее цвет -->
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
