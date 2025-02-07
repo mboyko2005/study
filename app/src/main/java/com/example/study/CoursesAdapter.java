@@ -3,12 +3,11 @@ package com.example.study;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.study.databinding.ItemCourseBinding;
 
 import java.util.List;
 
@@ -29,18 +28,17 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.CourseVi
     @NonNull
     @Override
     public CourseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_course, parent, false);
-        return new CourseViewHolder(view);
+        ItemCourseBinding binding = ItemCourseBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+        return new CourseViewHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull CourseViewHolder holder, int position) {
         Course course = courses.get(position);
-        holder.courseTitle.setText(course.getTitle());
-        holder.progressText.setText(course.getProgress() + "% complete");
-        holder.progressBar.setProgress(course.getProgress());
-        holder.courseBackground.setImageResource(course.getImageResId());
+        holder.binding.tvCourseTitle.setText(course.getTitle());
+        holder.binding.tvCourseProgress.setText(course.getProgress() + "% complete");
+        holder.binding.progressCourse.setProgress(course.getProgress());
+        holder.binding.ivCourseBackground.setImageResource(course.getImageResId());
 
         holder.itemView.setOnClickListener(v -> listener.onCourseClick(course));
     }
@@ -51,16 +49,11 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.CourseVi
     }
 
     static class CourseViewHolder extends RecyclerView.ViewHolder {
-        TextView courseTitle, progressText;
-        ProgressBar progressBar;
-        ImageView courseBackground;
+        ItemCourseBinding binding;
 
-        public CourseViewHolder(@NonNull View itemView) {
-            super(itemView);
-            courseTitle = itemView.findViewById(R.id.tv_course_title);
-            progressText = itemView.findViewById(R.id.tv_course_progress);
-            progressBar = itemView.findViewById(R.id.progress_course);
-            courseBackground = itemView.findViewById(R.id.iv_course_background);
+        public CourseViewHolder(@NonNull ItemCourseBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
         }
     }
 }

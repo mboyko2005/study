@@ -5,10 +5,11 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.study.databinding.ItemLectureBinding;
 
 import java.util.List;
 
@@ -25,17 +26,16 @@ public class LectureAdapter extends RecyclerView.Adapter<LectureAdapter.LectureV
     @NonNull
     @Override
     public LectureViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_lecture, parent, false);
-        return new LectureViewHolder(view);
+        ItemLectureBinding binding = ItemLectureBinding.inflate(LayoutInflater.from(context), parent, false);
+        return new LectureViewHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull LectureViewHolder holder, int position) {
         Lecture lecture = lectures.get(position);
-        holder.title.setText(lecture.getTitle());
-        holder.contentPreview.setText(lecture.getPreviewContent()); // Устанавливаем краткое содержание
+        holder.binding.tvLectureTitle.setText(lecture.getTitle());
+        holder.binding.tvLectureContentPreview.setText(lecture.getPreviewContent());
 
-        // Открытие полной лекции при нажатии
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, LectureDetailActivity.class);
             intent.putExtra("lectureTitle", lecture.getTitle());
@@ -50,12 +50,11 @@ public class LectureAdapter extends RecyclerView.Adapter<LectureAdapter.LectureV
     }
 
     static class LectureViewHolder extends RecyclerView.ViewHolder {
-        TextView title, contentPreview;
+        ItemLectureBinding binding;
 
-        public LectureViewHolder(@NonNull View itemView) {
-            super(itemView);
-            title = itemView.findViewById(R.id.tv_lecture_title);
-            contentPreview = itemView.findViewById(R.id.tv_lecture_content_preview);
+        public LectureViewHolder(@NonNull ItemLectureBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
         }
     }
 }

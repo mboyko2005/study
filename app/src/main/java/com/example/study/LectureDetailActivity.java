@@ -1,26 +1,26 @@
 package com.example.study;
 
 import android.os.Bundle;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.study.databinding.ActivityLectureDetailBinding;
+
 public class LectureDetailActivity extends AppCompatActivity {
+
+    private ActivityLectureDetailBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_lecture_detail);
+        // Инициализация View Binding
+        binding = ActivityLectureDetailBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        TextView lectureTitle = findViewById(R.id.tv_lecture_detail_title);
-        TextView lectureContent = findViewById(R.id.tv_lecture_detail_content);
-
-        // Получаем данные из Intent
         String title = getIntent().getStringExtra("lectureTitle");
         String content = getIntent().getStringExtra("lectureContent");
 
-        // Устанавливаем данные
-        lectureTitle.setText(title);
-        lectureContent.setText(content);
+        binding.tvLectureDetailTitle.setText(title);
+        binding.tvLectureDetailContent.setText(content);
     }
 }

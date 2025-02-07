@@ -3,26 +3,37 @@ package com.example.study;
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.example.study.databinding.ActivityMaterialBinding;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 public class MaterialActivity extends AppCompatActivity {
 
+    private ActivityMaterialBinding binding;
     private String courseTitle;
+    private int userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_material);
+        // Инициализация View Binding
+        binding = ActivityMaterialBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        courseTitle = getIntent().getStringExtra("courseTitle");
+        Intent intent = getIntent();
+        courseTitle = intent.getStringExtra("courseTitle");
+        userId = intent.getIntExtra("userId", -1);
 
-        TabLayout tabLayout = findViewById(R.id.tab_layout);
-        ViewPager2 viewPager = findViewById(R.id.view_pager);
+        if (courseTitle == null || userId == -1) {
+            finish();
+            return;
+        }
+
+        TabLayout tabLayout = binding.tabLayout;
+        ViewPager2 viewPager = binding.viewPager;
 
         MaterialPagerAdapter adapter = new MaterialPagerAdapter(this, courseTitle);
         viewPager.setAdapter(adapter);

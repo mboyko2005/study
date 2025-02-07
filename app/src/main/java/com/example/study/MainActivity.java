@@ -3,53 +3,58 @@ package com.example.study;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.study.database.AppDatabase;
 import com.example.study.database.User;
+import com.example.study.databinding.ActivityMainBinding;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class MainActivity extends AppCompatActivity {
 
-    private EditText emailField, passwordField;
-    private Button loginButton;
-    private TextView registerLink;
+    private ActivityMainBinding binding;
+    private ExecutorService executorService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        // Инициализация View Binding
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        emailField = findViewById(R.id.et_email);
-        passwordField = findViewById(R.id.et_password);
-        loginButton = findViewById(R.id.btn_login);
-        registerLink = findViewById(R.id.tv_register);
-
+        executorService = Executors.newSingleThreadExecutor();
         AppDatabase db = AppDatabase.getInstance(this);
 
-        loginButton.setOnClickListener(v -> {
-            String email = emailField.getText().toString().trim();
-            String password = passwordField.getText().toString().trim();
+        binding.btnLogin.setOnClickListener(v -> {
+            String email = binding.etEmail.getText().toString().trim();
+            String password = binding.etPassword.getText().toString().trim();
 
             if (email.isEmpty() || password.isEmpty()) {
                 Toast.makeText(this, "Пожалуйста, заполните все поля!", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            new Thread(() -> {
-                User user = db.userDao().authenticateUser(email, password);
+            // Если введён админский логин/пароль
+            if (email.equals("admin") && password.equals("admin")) {
+                Toast.makeText(this, "Администратор авторизован!", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(MainActivity.this, AdminActivity.class);
+                startActivity(intent);
+                finish();
+                return;
+            }
+
+            String hashedPassword = Utils.hashPassword(password);
+
+            executorService.execute(() -> {
+                User user = db.userDao().authenticateUser(email, hashedPassword);
                 runOnUiThread(() -> {
                     if (user != null) {
                         Toast.makeText(this, "Авторизация успешна!", Toast.LENGTH_SHORT).show();
-
-                        // Сохраняем текущего пользователя
+                        // Сохраняем идентификатор пользователя
                         SharedPreferences userPrefs = getSharedPreferences("ActiveUser", MODE_PRIVATE);
                         SharedPreferences.Editor editor = userPrefs.edit();
-                        editor.putString("userId", user.getEmail());
+                        editor.putInt("userId", user.getId());
                         editor.apply();
 
                         Intent intent = new Intent(MainActivity.this, CoursesActivity.class);
@@ -59,12 +64,18 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(this, "Неверный email или пароль!", Toast.LENGTH_SHORT).show();
                     }
                 });
-            }).start();
+            });
         });
 
-        registerLink.setOnClickListener(v -> {
+        binding.tvRegister.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
             startActivity(intent);
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        executorService.shutdown();
     }
 }
