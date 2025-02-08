@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             // Если введён админский логин/пароль
-            if (email.equals("admin") && password.equals("admin")) {
+            if (email.equals("2") && password.equals("2")) {
                 Toast.makeText(this, "Администратор авторизован!", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(MainActivity.this, AdminActivity.class);
                 startActivity(intent);

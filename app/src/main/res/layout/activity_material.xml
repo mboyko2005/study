@@ -5,22 +5,27 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <!-- TabLayout для переключения между Лекциями и Тестами -->
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textColor="#005F8A"
+        app:tabIndicatorColor="#006699"
+        app:tabSelectedTextColor="#006699"
+        app:tabTextColor="#0088CC"
+        android:background="#FFFFFF"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
+    <!-- ViewPager2 для отображения содержимого вкладок -->
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/view_pager"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:textColor="#005F8A"
         app:layout_constraintTop_toBottomOf="@id/tab_layout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
