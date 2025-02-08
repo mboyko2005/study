@@ -1,26 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:background="#FFFFFF"
+    android:padding="24dp">
 
-    <TextView
-        android:id="@+id/tv_lecture_detail_title"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Заголовок лекции"
-        android:textColor="#0098EA"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        android:paddingBottom="8dp" />
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tv_lecture_detail_content"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Содержание лекции"
-        android:textColor="#1E2337"
-        android:textSize="16sp" />
-</LinearLayout>
+        <!-- Заголовок лекции -->
+        <TextView
+            android:id="@+id/tv_lecture_detail_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Заголовок лекции"
+            android:textColor="#1976D2"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.04"
+            android:paddingBottom="16dp" />
+
+        <!-- Содержание лекции -->
+        <TextView
+            android:id="@+id/tv_lecture_detail_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Содержание лекции"
+            android:textColor="#424242"
+            android:textSize="18sp"
+            android:lineSpacingExtra="6dp" />
+
+    </LinearLayout>
+</ScrollView>
