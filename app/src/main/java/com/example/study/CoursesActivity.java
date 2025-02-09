@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-
 public class CoursesActivity extends AppCompatActivity {
 
     private RecyclerView coursesRecyclerView;
@@ -38,7 +37,6 @@ public class CoursesActivity extends AppCompatActivity {
         SharedPreferences userPrefs = getSharedPreferences("ActiveUser", MODE_PRIVATE);
         userId = userPrefs.getInt("userId", -1);
         if (userId == -1) {
-            // Обработка случая, когда userId не найден
             finish();
             return;
         }
@@ -112,5 +110,14 @@ public class CoursesActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         executorService.shutdown();
+    }
+
+    @Override
+    public void onBackPressed() {
+        // Переход на главный экран (MainActivity) при нажатии "Назад"
+        Intent intent = new Intent(CoursesActivity.this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish(); // Закрываем текущую активность
     }
 }
